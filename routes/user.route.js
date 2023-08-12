@@ -20,14 +20,14 @@ module.exports = (app) => {
 
 	router.use(verifyToken);
 	router.get('/profile', (req, res) =>
-		res
-			.status(200)
-			.send({
-				email: req.user.email,
-				fullname: req.user.fullname,
-				photo: req.user.photo,
-			})
+		res.status(200).send({
+			email: req.user.email,
+			fullname: req.user.fullname,
+			photo: req.user.photo,
+		})
 	);
+
+	router.patch('/reupload-photo', upload.single('photo'), user.reuploadPhoto);
 
 	app.use('/api/auth', router);
 };

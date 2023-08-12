@@ -1,10 +1,10 @@
-# Simple Login, Registration, and Forgot Password System
+# Simple Login, Registration, Upload photo, and Forgot Password System
 
-This project demonstrates a simple user authentication system using Express.js, Sequelize, JSON Web Tokens (JWT), MySQL2, and Nodemailer.
+This project demonstrates a simple user authentication system using Express.js, Sequelize, JSON Web Tokens (JWT), MySQL2, Firebase storage, and Nodemailer.
 
 ## Features
 
-- User registration with encrypted passwords and email verification
+- User registration with encrypted passwords, upload photo, and email verification
 - User login with JWT-based authentication
 - Forgot password functionality with a password reset and email verification
 
@@ -40,7 +40,7 @@ To get the project up and running on your local machine, follow these steps.
    npm start
    ```
 
-2. Access the API at `http://localhost:3000` (or the port you've configured).
+2. Access the API at `http://localhost:8080` (or the port you've configured).
 
 ### API Endpoints
 
@@ -49,7 +49,8 @@ To get the project up and running on your local machine, follow these steps.
 - `POST /api/auth/signin`: Log in with registered credentials and get a JWT.
 - `POST /api/auth/signout`: Log out with registered credentials and delete a JWT.
 - `POST /api/auth/forgot-password`: Initiate the forgot password process.
-- `POST /api/reset-password`: Reset the user's password using a reset token.
+- `POST /api/auth/reset-password`: Reset the user's password using a reset token.
+- `GET /api/auth/profile`: Get the user's info.
 
 ## Technologies Used
 
@@ -57,6 +58,7 @@ To get the project up and running on your local machine, follow these steps.
 - Sequelize (MySQL2)
 - JSON Web Tokens (JWT)
 - Nodemailer
+- Firebase storage
 
 ## Contributing
 

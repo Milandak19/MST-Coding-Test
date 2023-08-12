@@ -1,12 +1,12 @@
 # Simple Login, Registration, and Forgot Password System
 
-This project demonstrates a simple user authentication system using Express.js, Sequelize, JSON Web Tokens (JWT), and MySQL2.
+This project demonstrates a simple user authentication system using Express.js, Sequelize, JSON Web Tokens (JWT), MySQL2, and Nodemailer.
 
 ## Features
 
-- User registration with encrypted passwords
+- User registration with encrypted passwords and email verification
 - User login with JWT-based authentication
-- Forgot password functionality with password reset
+- Forgot password functionality with a password reset and email verification
 
 ## Getting Started
 
@@ -17,13 +17,13 @@ To get the project up and running on your local machine, follow these steps.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repo.git
+   git clone https://github.com/Milandak19/MST-Coding-Test.git
    ```
 
 2. Install dependencies:
 
    ```bash
-   cd your-repo
+   cd MST-Coding-Test
    npm install
    ```
 
@@ -44,9 +44,11 @@ To get the project up and running on your local machine, follow these steps.
 
 ### API Endpoints
 
-- `POST /api/register`: Register a new user.
-- `POST /api/login`: Log in with registered credentials and get a JWT.
-- `POST /api/forgot-password`: Initiate the forgot password process.
+- `POST /api/auth/signup`: Register a new user.
+- `POST /api/auth/verify`: Verify a new user.
+- `POST /api/auth/signin`: Log in with registered credentials and get a JWT.
+- `POST /api/auth/signout`: Log out with registered credentials and delete a JWT.
+- `POST /api/auth/forgot-password`: Initiate the forgot password process.
 - `POST /api/reset-password`: Reset the user's password using a reset token.
 
 ## Technologies Used
@@ -54,6 +56,7 @@ To get the project up and running on your local machine, follow these steps.
 - Express.js
 - Sequelize (MySQL2)
 - JSON Web Tokens (JWT)
+- Nodemailer
 
 ## Contributing
 

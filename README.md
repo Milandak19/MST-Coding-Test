@@ -51,6 +51,7 @@ To get the project up and running on your local machine, follow these steps.
 - `POST /api/auth/forgot-password`: Initiate the forgot password process.
 - `POST /api/auth/reset-password`: Reset the user's password using a reset token.
 - `GET /api/auth/profile`: Get the user's info.
+- `patch /api/auth/reupload-photo`: Edit user photo.
 
 ## Technologies Used
 

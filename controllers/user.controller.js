@@ -21,7 +21,7 @@ exports.signup = async (req, res) => {
 			username: req.body.username,
 			email: req.body.email,
 			password: req.body.password,
-			photo: photo,
+			photo,
 			fullname: req.body.fullname,
 			token,
 		});
@@ -165,6 +165,21 @@ exports.resetPassword = async (req, res) => {
 			{ where: { token } }
 		);
 		return res.status(200).send({ message: 'Reset password success.' });
+	} catch (error) {
+		return res.status(500).send({ message: error.message });
+	}
+};
+
+exports.reuploadPhoto = async (req, res) => {
+	try {
+		const { id } = req.user;
+		const user = await User.findOne({ where: { id } });
+		if (!user) {
+			return res.status(404).send({ message: 'User not found.' });
+		}
+		const photo = await uploader(req.file);
+		await User.update({ photo }, { where: { id } });
+		return res.status(200).send({ message: 'Photo change successfuly.' });
 	} catch (error) {
 		return res.status(500).send({ message: error.message });
 	}

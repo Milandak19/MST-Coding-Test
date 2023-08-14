@@ -9,7 +9,12 @@ const firebaseConfig = require('./config/firebase.config');
 
 initializeApp(firebaseConfig);
 
-app.use(cors());
+app.use(
+	cors({
+		origin: 'http://localhost:5173',
+		credentials: true,
+	})
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -17,7 +22,7 @@ app.use(
 		name: 'MST-test-session',
 		keys: [process.env.COOKIE_SECRET],
 		httpOnly: true,
-		maxAge: 60 * 60 * 24 * 1,
+		maxAge: 120 * 120 * 320 * 10,
 	})
 );
 app.get('/', (req, res) => {

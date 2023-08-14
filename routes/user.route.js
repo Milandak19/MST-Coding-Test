@@ -18,14 +18,10 @@ module.exports = (app) => {
 
 	router.post('/reset-password', user.resetPassword);
 
+	router.post('/verify-token', user.verifyToken);
+
 	router.use(verifyToken);
-	router.get('/profile', (req, res) =>
-		res.status(200).send({
-			email: req.user.email,
-			fullname: req.user.fullname,
-			photo: req.user.photo,
-		})
-	);
+	router.get('/profile', user.getProfile);
 
 	router.patch('/reupload-photo', upload.single('photo'), user.reuploadPhoto);
 

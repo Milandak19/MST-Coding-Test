@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const cookieSession = require('cookie-session');
 const rwt = require('random-web-token');
 const db = require('../models');
 const { uploader } = require('../helpers/upload.helper');
@@ -14,7 +15,7 @@ exports.signup = async (req, res) => {
 		sendEmail(
 			req.body.email,
 			'Verify your account',
-			`<p>Verify your email, click this url <a href="http://localhost:3000/auth/verify-email/${token}">http://localhost:3000/auth/verify-email/${token}</a></p>`
+			`<p>Verify your email, click this url <a href="http://localhost:5173/verify-email/${token}">http://localhost:5173/verify-email/${token}</a></p>`
 		);
 
 		const user = await User.create({
@@ -68,9 +69,6 @@ exports.signin = async (req, res) => {
 		const token = jwt.sign(
 			{
 				id: user.id,
-				email: user.email,
-				photo: user.photo,
-				fullname: user.fullname,
 			},
 			process.env.SECRET_KEY,
 			{
@@ -95,6 +93,12 @@ exports.signin = async (req, res) => {
 exports.signout = async (req, res) => {
 	try {
 		req.session = null;
+		cookieSession({
+			name: 'MST-test-session',
+			keys: [process.env.COOKIE_SECRET],
+			httpOnly: true,
+			maxAge: 0,
+		});
 		return res.status(200).send({
 			message: "You've been signed out!",
 		});
@@ -142,7 +146,7 @@ exports.forgotPassword = async (req, res) => {
 			'Reset Your Password',
 			`
         <p>You are receiving this email because we received a password reset request for your account. To proceed with resetting your password, click the link below:</p>
-        <p><a href="http://localhost:3000/api/auth/reset-password/${token}">Reset Password</a></p>
+        <p><a href="http://localhost:5173/reset-password/${token}">Reset Password</a></p>
       `
 		);
 		return res
@@ -182,5 +186,43 @@ exports.reuploadPhoto = async (req, res) => {
 		return res.status(200).send({ message: 'Photo change successfuly.' });
 	} catch (error) {
 		return res.status(500).send({ message: error.message });
+	}
+};
+
+exports.getProfile = async (req, res) => {
+	try {
+		const { id } = req.user;
+		const user = await User.findOne({ where: { id } });
+		if (!user) {
+			return res.status(404).send({ message: 'User not found.' });
+		}
+		return res.status(200).send({
+			token: jwt.sign(
+				{
+					fullname: user.fullname,
+					email: user.email,
+					photo: user.photo,
+				},
+				process.env.PUBLIC_KEY,
+				{
+					algorithm: 'HS256',
+					allowInsecureKeySizes: true,
+					expiresIn: 86400, // 24 hours
+				}
+			),
+		});
+	} catch (error) {
+		res.status(500).send(error);
+	}
+};
+
+exports.verifyToken = async (req, res) => {
+	try {
+		const { token } = req.body;
+		const user = await User.findOne({ where: { token } });
+		if (!user) return res.status(404).send({ message: 'Token not found.' });
+		return res.status(200).send({ message: 'Token found.' });
+	} catch (error) {
+		res.status(500).send(error);
 	}
 };
